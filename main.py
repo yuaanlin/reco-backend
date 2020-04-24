@@ -23,7 +23,7 @@ def hello():
 # Session 登入
 @app.route('/checksession', methods=['POST'])
 def check():
-    sessionID = request.headers['session']
+    sessionID = request.headers['Authorization']
     if checksession(sessionID):
         check_result = sessions_collection.find_one({'_id': sessionID})
         userid = check_result['user']
@@ -44,7 +44,7 @@ def getEvents():
     except:
         return 'Please use Reco Client', 403
 
-    sessionID = request.headers['session']
+    sessionID = request.headers['Authorization']
     if checksession(sessionID):
         target_range = Range(datetime(year, month, 1), datetime(
             year, month, calendar.monthrange(year, month)[1]))
@@ -84,12 +84,13 @@ def getEvents():
 
 @app.route('/write-event', methods=['POST'])
 def write_event():
+
     data = request.get_json()
-    print(request)
-    if 'event' not in data:  # 請求格式不符
+
+    if data == None or 'event' not in data:  # 請求格式不符
         return 'Please use Reco Client', 403
 
-    sessionID = request.headers['session']
+    sessionID = request.headers['Authorization']
     if checksession(sessionID):
 
         # 新 Event 資料
@@ -110,11 +111,13 @@ def write_event():
 
 @app.route('/write-todo', methods=['POST'])
 def write_todo():
+
     data = request.get_json()
-    if 'todo' not in data:  # 請求格式不符
+
+    if data == None or 'todo' not in data:  # 請求格式不符
         return 'Please use Reco Client', 403
 
-    sessionID = request.headers['session']
+    sessionID = request.headers['Authorization']
     if checksession(sessionID):
 
         # 新 Todo 資料
@@ -134,10 +137,13 @@ def write_todo():
 
 @app.route('/delete-item', methods=['POST'])
 def deleteitem():
+
     data = request.get_json()
-    if '_id' not in data:  # 請求格式不符
+
+    if data == None or '_id' not in data:  # 請求格式不符
         return 'Please use Reco Client', 403
-    sessionID = request.headers['session']
+
+    sessionID = request.headers['Authorization']
     if checksession(sessionID):
 
         # 用戶 id
@@ -157,7 +163,7 @@ def deleteitem():
                     todos_collection.delete_one({'_id': data['_id']})
                     return 'Delete complete', 200
 
-        return 'Item not found', 404
+        return 'Item not found or has been deleted', 404
     else:  # Session 已過期
         return 'Session is not availible', 401
 
