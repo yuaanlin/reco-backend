@@ -19,7 +19,7 @@ jobs:
                   at: .
             - run:
                   name: ls
-                  command: ls
+                  command: ls -al
             - run:
                   name: Setup gcloud env
                   command: |
