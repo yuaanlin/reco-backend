@@ -17,7 +17,7 @@ jobs:
             - persist_to_workspace:
                   root: .
                   paths:
-                      - requirements.py
+                      - requirements.txt
                       - checksession.py
                       - date.py
                       - db.py
