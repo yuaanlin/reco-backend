@@ -17,7 +17,7 @@ jobs:
         steps:
             - attach_workspace:
                   at: .
-            - ls:
+            - run:
                   name: ls
                   command: ls
             - run:
