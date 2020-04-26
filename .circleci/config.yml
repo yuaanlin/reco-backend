@@ -2,15 +2,11 @@ version: 2.1
 
 orbs:
     python: circleci/python@0.2.1
-    slack: circleci/slack@3.4.2
 
 jobs:
     build:
         executor: python/default
         steps:
-            - slack/approval-notification:
-                  message: 新版本 Reco Flask 後端伺服器即將開始更新
-                  webhook: https://hooks.slack.com/services/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
             - checkout
             - python/load-cache
             - python/install-deps
@@ -28,18 +24,12 @@ jobs:
                       - db.py
                       - main.py
                       - app.yaml
-            - slack/approval-notification:
-                  message: 新版本 Reco Flask 後端伺服器完成 Build 工作階段！
-                  webhook: https://hooks.slack.com/services/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
     deploy:
         docker:
             - image: google/cloud-sdk
         steps:
             - attach_workspace:
                   at: .
-            - slack/approval-notification:
-                  message: 新版本 Reco Flask 後端伺服器開始部署
-                  webhook: https://hooks.slack.com/services/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
             - run:
                   name: Setup gcloud env
                   command: |
@@ -51,11 +41,6 @@ jobs:
                   name: Deploy to App Engine
                   command: gcloud app deploy
                   no_output_timeout: 30m
-            - slack/status:
-                  fail_only: false
-                  mentions: "U0138PGJF4G"
-                  only_for_branches: master
-                  webhook: https://hooks.slack.com/services/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
 
 workflows:
     version: 2
