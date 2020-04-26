@@ -1,0 +1,3 @@
+{
+    "MongoDB_Connect_String": "mongodb+srv://ken20001207:411612@cluster0-iwlj8.gcp.mongodb.net/test?retryWrites=true&w=majority"
+}
