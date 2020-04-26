@@ -11,6 +11,17 @@ jobs:
             - python/load-cache
             - python/install-deps
             - python/save-cache
+            - run:
+                  name: Install ApiKey file
+                  command: echo $MongoDB_Connection_String > apiKey.json
+            - persist_to_workspace:
+                  root: .
+                  paths:
+                      - checksession.py
+                      - date.py
+                      - db.py
+                      - main.py
+                      - app.yaml
     deploy:
         docker:
             - image: google/cloud-sdk
@@ -23,7 +34,6 @@ jobs:
             - run:
                   name: Setup gcloud env
                   command: |
-                      echo $MongoDB_Connection_String > apiKey.json
                       echo $GCP_KEY > gcloud-service-key.json
                       gcloud auth activate-service-account --key-file=gcloud-service-key.json
                       gcloud --quiet config set project ${GCP_PROJECT_ID}
