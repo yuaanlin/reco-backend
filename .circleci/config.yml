@@ -17,6 +17,9 @@ jobs:
         steps:
             - attach_workspace:
                   at: .
+            - ls:
+                  name: ls
+                  command: ls
             - run:
                   name: Setup gcloud env
                   command: |
