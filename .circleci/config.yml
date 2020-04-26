@@ -42,6 +42,7 @@ jobs:
             - run:
                   name: Deploy to App Engine
                   command: gcloud app deploy
+                  no_output_timeout: 30m
 
 workflows:
     version: 2
