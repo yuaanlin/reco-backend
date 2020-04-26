@@ -1,21 +1,42 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
+    python: circleci/python@0.2.1
 
 jobs:
-  build-and-test:
-    executor: python/default
-    steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: python main.py
-          name: Test
+    build:
+        executor: python/default
+        steps:
+            - checkout
+            - python/load-cache
+            - python/install-deps
+            - python/save-cache
+    deploy:
+        docker:
+            - image: google/cloud-sdk
+        steps:
+            - attach_workspace:
+                  at: .
+            - run:
+                  name: Setup gcloud env
+                  command: |
+                      echo $MongoDB_Connection_String > apiKey.json
+                      echo $GCP_KEY > gcloud-service-key.json
+                      gcloud auth activate-service-account --key-file=gcloud-service-key.json
+                      gcloud --quiet config set project ${GCP_PROJECT_ID}
+                      gcloud --quiet config set compute/zone ${GCP_REGION}
+            - run:
+                  name: Deploy to App Engine
+                  command: gcloud app deploy
 
 workflows:
-  main:
-    jobs:
-      - build-and-test
+    version: 2
+    build-deploy:
+        jobs:
+            - build
+            - deploy:
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: master

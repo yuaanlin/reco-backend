@@ -1,3 +1,0 @@
-{
-    "MongoDB_Connect_String": "mongodb+srv://<username>:<password>@cluster0-iwlj8.gcp.mongodb.net/test?retryWrites=true&w=majority"
-}
