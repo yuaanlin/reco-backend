@@ -25,6 +25,9 @@ jobs:
                       - db.py
                       - main.py
                       - app.yaml
+             - slack/status:
+                  mentions: "U0138PGJF4G"
+                  webhook: ${SLACK_WEBHOOK}
     deploy:
         docker:
             - image: google/cloud-sdk
@@ -42,6 +45,9 @@ jobs:
                   name: Deploy to App Engine
                   command: gcloud app deploy
                   no_output_timeout: 30m
+             - slack/status:
+                  mentions: "U0138PGJF4G"
+                  webhook: ${SLACK_WEBHOOK}
 
 workflows:
     version: 2
@@ -60,8 +66,3 @@ workflows:
                   filters:
                       branches:
                           only: master
-            - slack/status:
-                  fail_only: false
-                  mentions: "U0138PGJF4G"
-                  only_for_branches: master
-                  webhook: ${SLACK_WEBHOOK}
