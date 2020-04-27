@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+    slack: circleci/slack@3.4.2
     python: circleci/python@0.2.1
 
 jobs:
@@ -69,5 +70,3 @@ workflows:
                   mentions: ""
                   only_for_branches: master
                   webhook: ${SLACK_WEBHOOK}
-orbs:
-    slack: circleci/slack@3.4.2
