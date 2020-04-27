@@ -25,9 +25,6 @@ jobs:
                       - db.py
                       - main.py
                       - app.yaml
-             - slack/status:
-                  mentions: "U0138PGJF4G"
-                  webhook: ${SLACK_WEBHOOK}
     deploy:
         docker:
             - image: google/cloud-sdk
@@ -58,6 +55,7 @@ workflows:
                   webhook: ${SLACK_WEBHOOK}
             - build
             - slack/approval-notification:
+                  requires: build
                   message: (Workflow \#$CIRCLE_BUILD_NUM) New Reco flask backend has built successfully, deploying to Google Cloud App Engine.
                   webhook: ${SLACK_WEBHOOK}
             - deploy:
