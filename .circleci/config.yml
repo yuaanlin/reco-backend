@@ -42,11 +42,6 @@ jobs:
                   name: Deploy to App Engine
                   command: gcloud app deploy
                   no_output_timeout: 30m
-            - slack/status:
-                  fail_only: false
-                  mentions: "U0138PGJF4G"
-                  only_for_branches: master
-                  webhook: ${SLACK_WEBHOOK}
 
 workflows:
     version: 2
@@ -67,6 +62,6 @@ workflows:
                           only: master
             - slack/status:
                   fail_only: false
-                  mentions: ""
+                  mentions: "U0138PGJF4G"
                   only_for_branches: master
                   webhook: ${SLACK_WEBHOOK}
