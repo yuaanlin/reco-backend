@@ -47,14 +47,7 @@ workflows:
     version: 2
     build-deploy:
         jobs:
-            - slack/approval-notification:
-                  message: (Workflow \#$CIRCLE_BUILD_NUM) New Reco flask backend is starting building now.
-                  webhook: ${SLACK_WEBHOOK}
             - build
-            - slack/approval-notification:
-                  requires: build
-                  message: (Workflow \#$CIRCLE_BUILD_NUM) New Reco flask backend has built successfully, deploying to Google Cloud App Engine.
-                  webhook: ${SLACK_WEBHOOK}
             - deploy:
                   requires:
                       - build
