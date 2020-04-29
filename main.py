@@ -46,8 +46,8 @@ def getEvents():
 
     sessionID = request.headers['Authorization']
     if checksession(sessionID):
-        target_range = Range(datetime(year, month, 1), datetime(
-            year, month, calendar.monthrange(year, month)[1]))
+        target_range = Range(datetime(year, month, 1, 0, 0, 0), datetime(
+            year, month, calendar.monthrange(year, month)[1], 23, 59, 59))
 
         # 用戶 id
         userid = sessions_collection.find_one({'_id': sessionID})['user']
@@ -63,19 +63,25 @@ def getEvents():
         todos = []
         for calendarID in calendarIDs:
             for event in events_collection.find({'calendar': calendarID}):
+
                 day_range = Range(event['startTime'], event['endTime'])
                 if range_overlap(target_range, day_range) > 0:
+
                     event['startTime'] = event['startTime'].strftime(
                         '%Y-%m-%dT%H:%M:%S')
                     event['endTime'] = event['endTime'].strftime(
                         '%Y-%m-%dT%H:%M:%S')
                     events.append(event)
+
             for todo in todos_collection.find({'calendar': calendarID}):
+
                 day_range = Range(todo['deadline'], todo['deadline'])
                 if range_overlap(target_range, day_range) > 0:
+
                     todo['deadline'] = todo['deadline'].strftime(
                         '%Y-%m-%dT%H:%M:%S')
                     todos.append(todo)
+
         return json.dumps({'events': events, 'todos': todos}, ensure_ascii=False)
 
     else:  # Session 已過期
