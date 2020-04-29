@@ -20,8 +20,9 @@ jobs:
                   paths:
                       - apiKey.json
                       - requirements.txt
-                      - checksession.py
-                      - date.py
+                      - utils
+                      - functions
+                      - classes
                       - db.py
                       - main.py
                       - app.yaml
