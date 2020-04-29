@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from pymongo import MongoClient
 
+from utils.bcolors import bcolors
+
 import json
 import sys
 
@@ -13,7 +15,7 @@ try:
     conn = MongoClient(config['MongoDB_Connect_String'])
     conn.server_info()
 except Exception as e:
-    print("Connecting to database failed.")
+    print(bcolors.FAIL + 'Connecting to database failed:' + bcolors.ENDC)
     print("Error message: {}".format(e))
     exit()
 
