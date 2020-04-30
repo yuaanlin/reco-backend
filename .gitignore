@@ -1,7 +1,12 @@
+# Python virtual Env
 venv
+
+# Editor settings
 .vscode
+
+# Python cachges
 __pycache__
 *.pyc
+
+# Environment variables
 apiKey.json
-banjia.py
-origindata.json
